@@ -1,0 +1,90 @@
+
+
+/* 2) Fondo y contenedor general */
+.login-page {
+  background: #eef5f8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 0 16px;
+}
+
+/* logo  */
+.logo-container {
+  margin-top: 80px;
+  ion-img {
+    width: 180px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+}
+
+/* formulario */
+.formContent {
+  width: 95%;
+  max-width: 400px;
+  margin: 100px auto 24px;
+}
+
+.login-card {
+  background: white;
+  border-radius: 32px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.login-card ion-card-content {
+  padding: 48px 24px;
+}
+
+.formLogin {
+  display: flex;
+  flex-direction: column;
+}
+
+.formLogin h2 {
+  margin: 0 0 24px;
+  text-align: center;
+  color: #16a0ee;
+  font-size: 1.75rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.formLogin .inputForm {
+  background: transparent !important;
+  border-style: none none solid none !important;
+  border-width: 1px !important;
+  border-color: #ccc !important;
+  margin-bottom: 24px !important;
+}
+
+.formLogin .inputForm {
+  padding: 8px 4px !important;
+  font-size: 1rem !important;
+  color: #333 !important;
+}
+.formLogin .inputForm {
+  color: #bbb !important;
+}
+
+/* boton login */
+.buttonLogin {
+  text-align: center;
+}
+
+
+/*  registro */
+.signup-text {
+  text-align: center;
+  margin-top: 12px;
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.signup-text a {
+  color: #16a0ee;
+  font-weight: 500;
+}

@@ -1,0 +1,48 @@
+.welcome {
+  --background: #ffffff;
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.logo-wellcome {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50%;
+}
+
+ion-img {
+  width: 300px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+
+}
+
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 80px;
+  width: 100%;
+}
+
+
+
+
+/* Ocultar barra desplazamiento derecha*/
+
+ion-content.welcome {
+  &::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+  }
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}

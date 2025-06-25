@@ -1,0 +1,73 @@
+<ion-content [scrollY]="false">
+  <div class="login-page">
+    <div class="logo-container">
+      <ion-img src="../../../assets/icon/logo-UnifyChat.png"></ion-img>
+    </div>
+
+    <!-- Formulario de login -->
+    <div class="formContent">
+      <div class="login-card">
+        <ion-card>
+          <ion-card-content>
+            <div class="formLogin">
+              <h2>Welcome to UnifyApp</h2>
+
+              <form [formGroup]="myForm">
+
+                <!-- email -->
+
+                <ion-item lines="none">
+                  <input placeholder="E-mail" class="inputForm" formControlName="email" type="email" required>
+                </ion-item>
+
+                @if( formUtils.isValidField(myForm, 'email') ){
+                <span>
+                  {{ formUtils.getFieldError(myForm, 'email') }}
+                </span>
+                }
+
+                <!-- password -->
+                <ion-item lines="none">
+                  <input placeholder="Password" class="inputForm" formControlName="password" type="password" required>
+                </ion-item>
+
+                @if( formUtils.isValidField(myForm, 'password') ){
+                <span>
+                  {{ formUtils.getFieldError(myForm, 'password') }}
+                </span>
+                }
+
+
+              </form>
+              <!-- login -->
+                <div class="buttonLogin">
+                  <ion-button expand="block" type="button" (click)="login()" class="login-btn">
+                    Login with Google
+                  </ion-button>
+                </div>
+              <p class="signup-text">
+                Don’t have an account? <a (click)="goToSignup()">Sign up</a>
+              </p>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </div>
+  </div>
+</ion-content>
+<!-- DEBO CREAR UN COMPONENTE <ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="home">
+      <ion-icon></ion-icon>
+      <ion-label>Welcome</ion-label>
+    </ion-tab-button>
+    <ion-tab-button tab="login">
+      <ion-icon></ion-icon>
+      <ion-label>Login</ion-label>
+    </ion-tab-button>
+    <ion-tab-button tab="settings">
+      <ion-icon></ion-icon>
+      <ion-label>Ajustes</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs> -->

@@ -1,0 +1,43 @@
+.header-chat {
+  border-bottom: 1px solid var(--ion-color-medium-shade);
+}
+
+.header-chat ion-toolbar {
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
+  --padding-start: 0;
+  --padding-end: 0;
+  width: 100%;
+}
+
+.header-chat ion-buttons[slot="start"],
+.header-chat ion-buttons[slot="end"] {
+  position: static !important;
+}
+
+.header-logo {
+  width: 90px;
+  height: 60px;
+}
+
+.header-logo {
+  width: 90px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.logo-chat,
+.button-chat {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.button-chat {
+  justify-content: flex-end;
+}
+
+.logo-chat {
+  justify-content: flex-end;
+}

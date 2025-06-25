@@ -1,0 +1,28 @@
+<ion-header>
+  <div class="header-chat">
+  <ion-toolbar>
+
+    <div class="logo-chat">
+    <ion-buttons slot="start">
+      <img src="assets/icon/logo-UnifyChat.png" alt="Logo" class="header-logo" />
+    </ion-buttons>
+    </div>
+
+    <ion-title></ion-title>
+
+    <div class="button-chat">
+    <ion-buttons slot="end">
+      <!-- Botón de cerrar sesión -->
+      <ion-button (click)="logout()">
+        <ion-icon [icon]="logOutOutline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    </div>
+
+  </ion-toolbar>
+  </div>
+</ion-header>
+
+<ion-content>
+  <!-- Tu contenido del chat -->
+</ion-content>
