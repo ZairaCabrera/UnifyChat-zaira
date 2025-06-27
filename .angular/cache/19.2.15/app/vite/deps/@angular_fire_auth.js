@@ -7,27 +7,6 @@ import {
   ɵgetDefaultInstanceOf,
   ɵzoneWrap
 } from "./chunk-EU4LHBFC.js";
-import "./chunk-WGOLBJHD.js";
-import "./chunk-XWGYEMNI.js";
-import {
-  InjectionToken,
-  Injector,
-  NgModule,
-  NgZone,
-  Observable,
-  Optional,
-  PLATFORM_ID,
-  concatMap,
-  distinct,
-  from,
-  makeEnvironmentProviders,
-  of,
-  setClassMetadata,
-  switchMap,
-  timer,
-  ɵɵdefineInjector,
-  ɵɵdefineNgModule
-} from "./chunk-4NFQX52V.js";
 import {
   AUTH_ERROR_CODES_MAP_DO_NOT_USE_INTERNALLY,
   ActionCodeOperation,
@@ -115,7 +94,28 @@ import {
   verifyBeforeUpdateEmail,
   verifyPasswordResetCode
 } from "./chunk-76DWDBVO.js";
+import "./chunk-TFEDMVCQ.js";
+import {
+  InjectionToken,
+  Injector,
+  NgModule,
+  NgZone,
+  Observable,
+  Optional,
+  PLATFORM_ID,
+  concatMap,
+  distinct,
+  from,
+  makeEnvironmentProviders,
+  of,
+  setClassMetadata,
+  switchMap,
+  timer,
+  ɵɵdefineInjector,
+  ɵɵdefineNgModule
+} from "./chunk-4NFQX52V.js";
 import "./chunk-S3YC363S.js";
+import "./chunk-WGOLBJHD.js";
 import {
   Component,
   Deferred,

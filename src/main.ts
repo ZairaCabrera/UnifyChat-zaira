@@ -9,6 +9,7 @@ import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { IonicModule } from '@ionic/angular';
 import { environment } from './environments/environment';
 import { getAuth, provideAuth } from '@angular/fire/auth';
+import { getDatabase, provideDatabase } from '@angular/fire/database';
 
 
 bootstrapApplication(AppComponent, {
@@ -22,6 +23,8 @@ bootstrapApplication(AppComponent, {
 
     // recoge el token de auth para "inyectar" auth en servicios
     provideAuth(() => getAuth()),
+
+    provideDatabase(() => getDatabase()),
   ]
 })
 .catch(err => console.error(err));

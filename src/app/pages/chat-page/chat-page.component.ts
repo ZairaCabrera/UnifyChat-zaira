@@ -1,22 +1,49 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { IonicModule, NavController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { logOutOutline } from 'ionicons/icons';
+import { CommonModule, DatePipe } from '@angular/common';
+import { Messages } from 'src/app/interfaces/messages.interface';
+import { ChatService } from 'src/app/services/chatService.service';
+import { FormsModule } from '@angular/forms';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-chat-page',
-  imports: [IonicModule],
+  imports: [IonicModule, DatePipe, CommonModule, FormsModule],
   templateUrl: './chat-page.component.html',
   styleUrls: ['./chat-page.component.scss'],
 })
-export default class ChatPageComponent implements OnInit {
+export default class ChatPageComponent {
 
   private auth = inject(AuthService);
+  private chat = inject(ChatService);
   private navCtrl = inject(NavController);
 
-  public logOutOutline = logOutOutline;
+  public logOutOutline = logOutOutline; //icono de cerrar sesión
 
-  ngOnInit() { }
+  public messages = signal<Messages[]>([]);//aqui se crean los mensajes con la interfaz que queremos
+  public messageInput = signal('');
+  currentUser = this.auth.currentUser$ ; //info usuario autenticado: observable<User|null>
+
+  ngOnInit() {
+    // al llegar nuevos mensajes, actualizamos la señal
+    this.chat.getMessages().subscribe(msgs => {
+      this.messages.set(msgs);
+    });
+  }
+
+  async sendMessage(text: string) {
+    const trimmed = text.trim();
+    if (!trimmed) return;
+
+    try {
+      await this.chat.sendMessage(trimmed);
+    } catch (err) {
+      console.error('Error al enviar mensaje:', err);
+    }
+  }
+
 
   async logout() {
     try {
@@ -27,5 +54,8 @@ export default class ChatPageComponent implements OnInit {
       console.error('Error al cerrar sesión', err);
     }
   }
+
+
+
 
 }

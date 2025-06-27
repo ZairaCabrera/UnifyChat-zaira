@@ -23,6 +23,44 @@
   </div>
 </ion-header>
 
-<ion-content>
-  <!-- Tu contenido del chat -->
+<ion-content class="chat-content">
+  <ion-list lines="none">
+    @for ( msg of messages() ; track messages.from; let index = $index ) {
+      <ion-item [class.own]="msg.from === (currentUser$ | async)?.uid">
+        @if (msg.avatar) {
+          <ion-avatar slot="start">
+            <img [src]="msg.avatar" />
+          </ion-avatar>
+        }
+        <ion-label class="message-bubble">
+          <p>{{ msg.text }}</p>
+          <span class="timestamp">{{ msg.ts | date:'shortTime' }}</span>
+        </ion-label>
+      </ion-item>
+    }
+  </ion-list>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-item lines="none">
+      <ion-input
+        #msgInput
+        placeholder="Escribe un mensaje"
+        (keyup.enter)="
+          sendMessage(msgInput.value);
+          msgInput.value = ''
+        "
+      ></ion-input>
+      <ion-button
+        slot="end"
+        (click)="
+          sendMessage(msgInput.value);
+          msgInput.value = ''
+        "
+      >
+        <ion-icon name="send-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-toolbar>
+</ion-footer>

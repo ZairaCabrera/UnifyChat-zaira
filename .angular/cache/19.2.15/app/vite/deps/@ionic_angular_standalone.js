@@ -86,20 +86,20 @@ import {
   setIonicClasses,
   setOverlayId,
   toastController
-} from "./chunk-3JRQ7U5N.js";
+} from "./chunk-TC4RZ6JN.js";
+import {
+  GESTURE_CONTROLLER,
+  createGesture
+} from "./chunk-BF4AXLRD.js";
 import {
   shouldUseCloseWatcher
 } from "./chunk-22S3O5CM.js";
 import {
-  ActivatedRoute,
-  Router
-} from "./chunk-E5CZMLJE.js";
-import {
   iosTransitionAnimation
-} from "./chunk-IZ36HEYE.js";
+} from "./chunk-C3TCO22T.js";
 import {
   mdTransitionAnimation
-} from "./chunk-QFS3UYMC.js";
+} from "./chunk-5DPEQSKI.js";
 import {
   LIFECYCLE_DID_LEAVE,
   LIFECYCLE_WILL_LEAVE,
@@ -110,7 +110,7 @@ import {
   setPageHidden,
   transition,
   waitForMount
-} from "./chunk-IMAYCIWG.js";
+} from "./chunk-HPCN2MB7.js";
 import {
   Build,
   Fragment,
@@ -124,10 +124,6 @@ import {
   readTask,
   writeTask
 } from "./chunk-CKFPX5IG.js";
-import {
-  doc,
-  win
-} from "./chunk-44IZU6OF.js";
 import {
   addEventListener,
   assert,
@@ -149,25 +145,29 @@ import {
   transitionEndAsync
 } from "./chunk-R4SJUBFW.js";
 import {
+  doc,
+  win
+} from "./chunk-44IZU6OF.js";
+import {
   config,
   printIonError,
   printIonWarning
 } from "./chunk-CBIR4FRL.js";
 import {
-  GESTURE_CONTROLLER,
-  createGesture
-} from "./chunk-BF4AXLRD.js";
-import "./chunk-ZGXAIOKO.js";
+  ActivatedRoute,
+  Router
+} from "./chunk-X53Z5Z5I.js";
+import "./chunk-WESIJBHV.js";
 import {
   NG_VALUE_ACCESSOR
-} from "./chunk-QKO4PVHC.js";
+} from "./chunk-D6A5BOKL.js";
 import {
   CommonModule,
   DOCUMENT,
   Location,
   NgIf,
   NgTemplateOutlet
-} from "./chunk-XWGYEMNI.js";
+} from "./chunk-TFEDMVCQ.js";
 import {
   APP_INITIALIZER,
   Attribute,
@@ -903,7 +903,7 @@ var RouterOutlet = proxyCustomElement(class RouterOutlet2 extends H {
           this.swipeHandler.onStart();
         }
       };
-      this.gesture = (yield import("./swipe-back-6MM6DKA5.js")).createSwipeBackGesture(this.el, () => !this.gestureOrAnimationInProgress && !!this.swipeHandler && this.swipeHandler.canStart(), () => onStart(), (step) => {
+      this.gesture = (yield import("./swipe-back-YM676QWR.js")).createSwipeBackGesture(this.el, () => !this.gestureOrAnimationInProgress && !!this.swipeHandler && this.swipeHandler.canStart(), () => onStart(), (step) => {
         var _a92;
         return (_a92 = this.ani) === null || _a92 === void 0 ? void 0 : _a92.progressStep(step);
       }, (shouldComplete, step, dur) => {
@@ -5582,14 +5582,14 @@ var App = proxyCustomElement(class App2 extends H {
       rIC(() => __async(this, null, function* () {
         const isHybrid = isPlatform(window, "hybrid");
         if (!config.getBoolean("_testing")) {
-          import("./index7-3OF4WKZX.js").then((module) => module.startTapClick(config));
+          import("./index7-J5LOTTUQ.js").then((module) => module.startTapClick(config));
         }
         if (config.getBoolean("statusTap", isHybrid)) {
           import("./status-tap-BC2JVO3J.js").then((module) => module.startStatusTap());
         }
         if (config.getBoolean("inputShims", needInputShims())) {
           const platform = isPlatform(window, "ios") ? "ios" : "android";
-          import("./input-shims-EYSJAK32.js").then((module) => module.startInputShims(config, platform));
+          import("./input-shims-QSL3INEW.js").then((module) => module.startInputShims(config, platform));
         }
         const hardwareBackButtonModule = yield import("./hardware-back-button-5U6IPO5T.js");
         const supportsHardwareBackButtonEvents = isHybrid || shouldUseCloseWatcher();
@@ -18884,7 +18884,7 @@ var Nav = proxyCustomElement(class Nav2 extends H {
     return __async(this, null, function* () {
       this.didLoad = true;
       this.rootChanged();
-      this.gesture = (yield import("./swipe-back-6MM6DKA5.js")).createSwipeBackGesture(this.el, this.canStart.bind(this), this.onStart.bind(this), this.onMove.bind(this), this.onEnd.bind(this));
+      this.gesture = (yield import("./swipe-back-YM676QWR.js")).createSwipeBackGesture(this.el, this.canStart.bind(this), this.onStart.bind(this), this.onMove.bind(this), this.onEnd.bind(this));
       this.swipeGestureChanged();
     });
   }
