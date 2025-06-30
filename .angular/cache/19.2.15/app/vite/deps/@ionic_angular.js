@@ -1,16 +1,16 @@
 import {
   menuController
-} from "./chunk-GZRADYF4.js";
+} from "./chunk-SJ5VUM6A.js";
 import {
   mdTransitionAnimation
-} from "./chunk-4YNCEVCP.js";
+} from "./chunk-3N5YBGZC.js";
 import {
   getTimeGivenProgression
 } from "./chunk-VBX4H6XT.js";
 import {
   IonicSafeString,
   setupConfig
-} from "./chunk-K2QVNYQB.js";
+} from "./chunk-TDDBWS4V.js";
 import {
   actionSheetController,
   alertController,
@@ -19,33 +19,33 @@ import {
   pickerController,
   popoverController,
   toastController
-} from "./chunk-MH5PSM5F.js";
-import "./chunk-YXWW5DMQ.js";
+} from "./chunk-BET2IODV.js";
+import "./chunk-RZ7LFXPN.js";
 import {
   openURL
-} from "./chunk-RC5HTYUZ.js";
+} from "./chunk-7KV6U36F.js";
 import {
   createGesture
 } from "./chunk-LRRXMVX2.js";
 import "./chunk-OWX7YSRF.js";
-import "./chunk-CWGNVUQ3.js";
+import "./chunk-FLI6JOWR.js";
 import {
   iosTransitionAnimation
-} from "./chunk-SCCRFEPL.js";
+} from "./chunk-4MXWOCHU.js";
 import {
   getIonPageElement
-} from "./chunk-KZREFOO5.js";
+} from "./chunk-NCFCRNTV.js";
 import {
   createAnimation
-} from "./chunk-PFSXLIKB.js";
-import "./chunk-EMUMJDEV.js";
+} from "./chunk-GBIEEFKX.js";
+import "./chunk-6OKTYT6F.js";
 import "./chunk-AM533ZC5.js";
 import {
   bootstrapLazy,
   getPlatforms,
   globalScripts,
   isPlatform
-} from "./chunk-A4AKHZ2H.js";
+} from "./chunk-K3J7422A.js";
 import {
   AngularDelegate,
   Config,
@@ -69,34 +69,34 @@ import {
   provideComponentInputBinding,
   raf,
   setIonicClasses
-} from "./chunk-TC4RZ6JN.js";
+} from "./chunk-YWH3OJLS.js";
 import "./chunk-BF4AXLRD.js";
-import "./chunk-22S3O5CM.js";
-import "./chunk-C3TCO22T.js";
-import "./chunk-5DPEQSKI.js";
-import "./chunk-HPCN2MB7.js";
-import "./chunk-CKFPX5IG.js";
+import "./chunk-HVFJUHIG.js";
+import "./chunk-S42XDSQW.js";
+import "./chunk-YKFHLL4H.js";
+import "./chunk-CDYJDJMY.js";
+import "./chunk-ISEEF5NP.js";
 import "./chunk-R4SJUBFW.js";
 import "./chunk-44IZU6OF.js";
 import "./chunk-CBIR4FRL.js";
 import {
   ActivatedRoute,
   Router
-} from "./chunk-X53Z5Z5I.js";
-import "./chunk-WESIJBHV.js";
+} from "./chunk-2LRYRPX5.js";
+import "./chunk-FUW7JW3T.js";
 import {
   MaxValidator,
   MinValidator,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR
-} from "./chunk-D6A5BOKL.js";
+} from "./chunk-NGHZTGLM.js";
 import {
   CommonModule,
   DOCUMENT,
   Location,
   NgIf,
   NgTemplateOutlet
-} from "./chunk-TFEDMVCQ.js";
+} from "./chunk-T5FPZNQR.js";
 import {
   APP_INITIALIZER,
   Attribute,
@@ -118,7 +118,6 @@ import {
   ViewChild,
   ViewContainerRef,
   forwardRef,
-  fromEvent,
   inject,
   setClassMetadata,
   ɵɵInheritDefinitionFeature,
@@ -152,7 +151,12 @@ import {
   ɵɵrestoreView,
   ɵɵtemplate,
   ɵɵviewQuery
-} from "./chunk-4NFQX52V.js";
+} from "./chunk-LF7N2F7G.js";
+import "./chunk-J64O5EGZ.js";
+import {
+  fromEvent
+} from "./chunk-D2ID5PW6.js";
+import "./chunk-ZCKGGNWJ.js";
 import {
   __decorate
 } from "./chunk-S3YC363S.js";
@@ -161,7 +165,7 @@ import {
   __publicField,
   __spreadProps,
   __spreadValues
-} from "./chunk-UQIXM5CJ.js";
+} from "./chunk-7S2HQCPE.js";
 
 // node_modules/@ionic/core/dist/esm/index.js
 var IonicSlides = (opts) => {

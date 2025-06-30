@@ -22,11 +22,11 @@ import {
   pingServer,
   registerVersion,
   updateEmulatorBanner
-} from "./chunk-ZS7ZFNMN.js";
+} from "./chunk-76UCLAU3.js";
 import {
   __async,
   __superGet
-} from "./chunk-UQIXM5CJ.js";
+} from "./chunk-7S2HQCPE.js";
 
 // node_modules/@firebase/webchannel-wrapper/dist/bloom-blob/esm/bloom_blob_es2018.js
 var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};

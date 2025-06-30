@@ -1,6 +1,5 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { RouteReuseStrategy, provideRouter, withPreloading, PreloadAllModules } from '@angular/router';
-//import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalone';
+import { provideRouter } from '@angular/router';
 
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
@@ -11,7 +10,10 @@ import { environment } from './environments/environment';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getDatabase, provideDatabase } from '@angular/fire/database';
 
-
+// --- Importaciones de la capa COMPAT:
+import { AngularFireModule }          from '@angular/fire/compat';
+import { AngularFireDatabaseModule }  from '@angular/fire/compat/database';
+import { AngularFireAuthModule }      from '@angular/fire/compat/auth';
 bootstrapApplication(AppComponent, {
   providers: [
     importProvidersFrom(IonicModule.forRoot()),
@@ -25,6 +27,13 @@ bootstrapApplication(AppComponent, {
     provideAuth(() => getAuth()),
 
     provideDatabase(() => getDatabase()),
+
+
+    importProvidersFrom(
+      AngularFireModule.initializeApp(environment.firebaseConfig),
+      AngularFireDatabaseModule,
+      AngularFireAuthModule
+    )
   ]
 })
 .catch(err => console.error(err));

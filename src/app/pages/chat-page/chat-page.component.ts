@@ -5,16 +5,16 @@ import { logOutOutline } from 'ionicons/icons';
 import { CommonModule, DatePipe } from '@angular/common';
 import { Messages } from 'src/app/interfaces/messages.interface';
 import { ChatService } from 'src/app/services/chatService.service';
-import { FormsModule } from '@angular/forms';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { firstValueFrom, take } from 'rxjs';
 
 @Component({
   selector: 'app-chat-page',
-  imports: [IonicModule, DatePipe, CommonModule, FormsModule],
+  imports: [IonicModule, DatePipe, CommonModule, ReactiveFormsModule],
   templateUrl: './chat-page.component.html',
   styleUrls: ['./chat-page.component.scss'],
 })
-export default class ChatPageComponent {
+export default class ChatPageComponent implements OnInit {
 
   private auth = inject(AuthService);
   private chat = inject(ChatService);
@@ -23,32 +23,53 @@ export default class ChatPageComponent {
   public logOutOutline = logOutOutline; //icono de cerrar sesión
 
   public messages = signal<Messages[]>([]);//aqui se crean los mensajes con la interfaz que queremos
-  public messageInput = signal('');
   currentUser = this.auth.currentUser$ ; //info usuario autenticado: observable<User|null>
+  public messageForm!: FormGroup; //creamos el formulario
+
+
+  constructor(private fb: FormBuilder,private chatService: ChatService, private authService: AuthService) {
+    this.messageForm = this.fb.group({
+      message: ['', [ Validators.required ]]
+    });
+  }
 
   ngOnInit() {
-    // al llegar nuevos mensajes, actualizamos la señal
     this.chat.getMessages().subscribe(msgs => {
       this.messages.set(msgs);
     });
   }
 
-  async sendMessage(text: string) {
-    const trimmed = text.trim();
-    if (!trimmed) return;
+  // llamamos a chat.sendMessage() y luego reseteamos el formulario
+  async onSubmit() {
+    if (this.messageForm.invalid) return;
+
+    const text = this.messageForm.value.message.trim();
+    if (!text) return;
+
+    const currentUser = await firstValueFrom(
+      this.authService.currentUser$.pipe(take(1))
+    );
+    if (!currentUser) { return; }
+
+    const newMsg: Messages = {
+      user:   currentUser.displayName || 'Anónimo',
+      from:   currentUser.uid,
+      text,
+      ts:     Date.now(),      // o serverTimestamp() si usas la API modular
+      avatar: currentUser.photoURL ?? undefined
+    };
 
     try {
-      await this.chat.sendMessage(trimmed);
+      await this.chatService.addMessage(newMsg);
+      this.messageForm.reset();
     } catch (err) {
-      console.error('Error al enviar mensaje:', err);
+      console.error('Error añadiendo mensaje:', err);
     }
   }
-
 
   async logout() {
     try {
       await this.auth.signOut();
-      //  vuelta a la pantalla de login
       this.navCtrl.navigateRoot(['/login'], { animated: true });
     } catch (err) {
       console.error('Error al cerrar sesión', err);

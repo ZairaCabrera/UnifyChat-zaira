@@ -36,3 +36,77 @@
   height: 60px;
   object-fit: contain;
 }
+
+
+.chat-footer {
+  padding: 0 12px;
+  --background: #fff;
+}
+/* chat-page.component.scss */
+
+.chat-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #fff;
+  box-shadow: 0 -1px 4px rgba(0,0,0,0.1);
+  z-index: 100;
+
+  ion-toolbar {
+    --background: transparent;
+    padding: 0;
+  }
+
+  .footer-inner {
+    display: flex;
+    align-items: flex-end;      /* alinea input y botón abajo */
+    padding: 8px 12px;          /* espacio interior en los lados */
+    gap: 8px;                   /* separación entre input y botón */
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .input-message {
+    flex: 1;                    /* ocupa todo el ancho posible */
+
+    ion-input::part(native) {
+      width: 100%;
+      height: auto;            /* deja que crezca en altura */
+      min-height: 40px;
+      max-height: 100px;       /* opcional: límite de tamaño */
+      background: #f1f1f1;
+      border-radius: 20px;
+      padding: 8px 12px;
+      font-size: 1rem;
+      border: none;            /* quita el borde rectangular */
+      color: #333;
+
+      /* placeholder gris suave */
+      &::placeholder {
+        color: #999;
+      }
+    }
+  }
+
+  .btn-message {
+    flex-shrink: 0;            /* no deja que el botón se encoja */
+    position: relative;
+
+    .circle-btn {
+      --border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      background: #007aff;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* si usas fontawesome dentro del ion-button */
+    .circle-btn i.fa-paper-plane {
+      font-size: 1.2rem;
+    }
+  }
+}
