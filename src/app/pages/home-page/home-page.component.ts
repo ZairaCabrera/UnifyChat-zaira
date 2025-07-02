@@ -1,5 +1,5 @@
-import { Component, inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { AnimationController, IonicModule, IonNav, NavController } from '@ionic/angular';
+import { Component, ViewEncapsulation } from '@angular/core';
+import { IonicModule, NavController } from '@ionic/angular';
 
 
 @Component({

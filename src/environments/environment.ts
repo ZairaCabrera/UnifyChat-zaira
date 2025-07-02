@@ -9,11 +9,12 @@ export const environment = {
   firebaseConfig: {
     apiKey: "AIzaSyBh2h_MSwfGvsY8j4Ld9TXk_GXDuu9my2o",
     authDomain: "chat-zaira.firebaseapp.com",
+    databaseURL: "https://chat-zaira-default-rtdb.europe-west1.firebasedatabase.app",
     projectId: "chat-zaira",
     storageBucket: "chat-zaira.firebasestorage.app",
     messagingSenderId: "740980826094",
     appId: "1:740980826094:web:0b0ce062017222edc4f8ff",
-    measurementId: "G-W0CS2FETLR",
+    measurementId: "G-W0CS2FETLR"
   }
 };
 

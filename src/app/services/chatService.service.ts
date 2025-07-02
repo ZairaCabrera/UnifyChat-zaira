@@ -1,5 +1,6 @@
 // src/app/services/chat.service.ts
 import { Injectable } from '@angular/core';
+//importamos el modulo de @angular/fire/database
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
 import { firstValueFrom, Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
@@ -23,11 +24,19 @@ export class ChatService {
     private authService: AuthService
   ) {
     // creamos la lista ordenada por el campo 'ts'
-    this.mensajesDB = this.db.list<Messages>(
-      '/messages',
-      ref => ref.orderByChild('ts')
+    this.mensajesDB = this.db.list('/messages', (ref) => ref.orderByChild('date')
     );
+
+    // this.mensajesDB.push({
+    // user: 'zaira',
+    // text: 'Mensaje de prueba',
+    // from: 'system',
+    // ts: serverTimestamp() as any, // Timestamp del servidor
+    // avatar: 'https://example.com/system-avatar.png' // URL de un avatar por defecto
+  // });
   }
+
+
 
   //push al nodo messages
    addMessage(msg: Messages): Promise<void> {

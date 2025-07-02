@@ -68,16 +68,3 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
--e "/node_modules\n/.angular/cache\n/.angular/dist"
-
-# Angular cache
-.angular/cache/
-
-# Dependencias instaladas
-node_modules/
-
-# Archivos binarios / zips
-*.zip
-
-# VSCode
-.vscode/
