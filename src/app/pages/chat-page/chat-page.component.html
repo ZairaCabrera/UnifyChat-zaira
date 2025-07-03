@@ -1,69 +1,65 @@
 <ion-header>
   <div class="header-chat">
-  <ion-toolbar>
+    <ion-toolbar>
 
-    <div class="logo-chat">
-    <ion-buttons slot="start">
-      <img src="assets/icon/logo-UnifyChat.png" alt="Logo" class="header-logo" />
-    </ion-buttons>
-    </div>
+      <div class="logo-chat">
+        <ion-buttons slot="start">
+          <img src="assets/icon/logo-UnifyChat.png" alt="Logo" class="header-logo" />
+        </ion-buttons>
+      </div>
 
-    <ion-title></ion-title>
+      <ion-title></ion-title>
 
-    <div class="button-chat">
-    <ion-buttons slot="end">
-      <!-- Botón de cerrar sesión -->
-      <ion-button (click)="logout()">
-        <ion-icon [icon]="logOutOutline" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    </div>
+      <div class="button-chat">
+          <!-- Botón de cerrar sesión -->
+          <button (click)="logout()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M10 9.408l2.963 2.592-2.963 2.592v-1.592h-8v-2h8v-1.592zm-2-4.408v4h-8v6h8v4l8-7-8-7zm6-3c-1.787 0-3.46.474-4.911 1.295l.228.2 1.396 1.221c1.004-.456 2.114-.716 3.287-.716 4.411 0 8 3.589 8 8s-3.589 8-8 8c-1.173 0-2.283-.26-3.288-.715l-1.396 1.221-.228.2c1.452.82 3.125 1.294 4.912 1.294 5.522 0 10-4.477 10-10s-4.478-10-10-10z" />
+            </svg>
+          </button>
+      </div>
 
-  </ion-toolbar>
+    </ion-toolbar>
   </div>
 </ion-header>
 
+
 <ion-content class="chat-content">
-  <ion-list lines="none">
-    @for ( msg of messages(); track msg.id) {
-      <ion-item [class.own]="msg.from === (currentUser | async)?.uid">
-        <ion-avatar *ngIf="msg.avatar" slot="start">
-          <img [src]="msg.avatar" />
-        </ion-avatar>
-        <ion-label class="message-bubble">
+  <div #chatList class="chat-list">
+    <ion-toolbar>
+      @for (msg of messages(); track msg.id) {
+      <div class="chat-item" [class.own]="msg.from === (currentUser | async)?.uid">
+        <!-- avatar -->
+        <img *ngIf="msg.avatar" [src]="msg.avatar" alt="avatar" class="chat-avatar" />
+        <!-- burbuja de mensaje -->
+        <div class="message-bubble">
           <p>{{ msg.text }}</p>
           <span class="timestamp">{{ msg.ts | date:'shortTime' }}</span>
-        </ion-label>
-      </ion-item>
-    }
-  </ion-list>
+        </div>
+      </div>
+      }
+    </ion-toolbar>
+  </div>
 </ion-content>
 
+
 <ion-footer>
-  <div class="chat-footer">
-  <ion-toolbar>
-    <div class="footer-inner">
-    <form [formGroup]="messageForm" (ngSubmit)="onSubmit()">
-      <ion-item lines="none">
-        <div class="input-message">
-        <ion-input
-          formControlName="message"
-          placeholder="Escribe un mensaje"
-        ></ion-input>
-        </div>
-        <div class="btn-message">
-        <ion-button
-          slot="end"
-          type="submit"
-          [disabled]="messageForm.get('message')?.invalid"
-          class="circle-btn"
-        >
-          <i class="fa-regular fa-paper-plane"></i>
-        </ion-button>
-        </div>
-      </ion-item>
-    </form>
-    </div>
-  </ion-toolbar>
+  <div class="chat-footer-native">
+    <ion-toolbar>
+      <div class="footer-inner-native">
+        <form [formGroup]="messageForm" (ngSubmit)="onSubmit()">
+
+          <input formControlName="message" placeholder="Escribe un mensaje" class="input-message-native" />
+
+          <button type="submit" [disabled]="messageForm.get('message')?.invalid" class="btn-message-native">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <path d="M2.01 21l20.99-9L2.01 3v7l15 2-15 2z" />
+            </svg>
+          </button>
+
+        </form>
+      </div>
+    </ion-toolbar>
   </div>
 </ion-footer>

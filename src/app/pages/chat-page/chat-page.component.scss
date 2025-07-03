@@ -1,13 +1,17 @@
 
+
 .header-chat {
   position: relative;
-  border-bottom: 1px solid var(--ion-color-medium-shade);
+  background: #fff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   height: 56px;
+  width: 100%;
 }
 
 .header-chat ion-toolbar {
   height: 100%;
   padding: 0;
+  padding: 0 16px;
 }
 
 .logo-chat {
@@ -20,14 +24,25 @@
   justify-content: flex-start;
 }
 
-.button-chat {
+.button-chat svg{
   position: absolute;
+  background: none;
+  border: none;
+  padding: 8px;
+  align-items: center;
+  justify-content: center;
+  color: #16a0ee;
+  cursor: pointer;
+  transition: opacity .2s;
   top: 50%;
   right: 16px;
   transform: translateY(-50%);
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
+  width: 50px;
+  height: 50px;
+}
+
+svg:hover {
+  opacity: 0.8;
 }
 
 
@@ -37,76 +52,123 @@
   object-fit: contain;
 }
 
+/* MENSAJE */
 
-.chat-footer {
-  padding: 0 12px;
-  --background: #fff;
+.chat-list ion-toolbar {
+  display: flex;
+  position: relative;
+  z-index: 101;
+  flex-direction: column;
+  height: 732px;
+  overflow-y: auto;
+  gap: 12px;
+  padding: 0 12 56px;
 }
-/* chat-page.component.scss */
 
-.chat-footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
+.chat-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 5px;
+}
+.chat-item.own {
+  justify-content: flex-end;
+}
+
+.chat-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 8px;
+  object-fit: cover;
+}
+
+.message-bubble {
+  background: #EAF5FF;
+  border-radius: 16px;
+  padding: 8px 12px;
+  max-width: 70%;
+}
+.message-bubble .timestamp {
+  display: block;
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 4px;
+}
+
+
+
+/* FOOTER */
+
+.chat-footer-native {
+  position: relative;
   background: #fff;
-  box-shadow: 0 -1px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.1);
+  height: 56px;
+  width: 100%;
+}
+
+.chat-footer-native ion-toolbar {
+  height: 100%;
+  padding: 0;
+}
+
+
+
+.footer-inner-native form {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 8px;
+}
+
+.chat-footer-native {
+  bottom: 0;
   z-index: 100;
+}
 
-  ion-toolbar {
-    --background: transparent;
-    padding: 0;
+.footer-inner-native {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  max-width: 600px;
+  margin: 0 auto;
+  gap: 8px;
+  width: 100%;
+}
+
+.input-message-native {
+  flex: 1;
+  min-height: 40px;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 12px;
+  background: #f1f1f1;
+  font-size: 1rem;
+  outline: none;
+
+  &::placeholder {
+    color: #999;
   }
+}
 
-  .footer-inner {
-    display: flex;
-    align-items: flex-end;      /* alinea input y botón abajo */
-    padding: 8px 12px;          /* espacio interior en los lados */
-    gap: 8px;                   /* separación entre input y botón */
-    max-width: 600px;
-    margin: 0 auto;
+.btn-message-native {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: #16a0ee;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  ion-icon {
+    font-size: 1.2rem;
   }
+}
 
-  .input-message {
-    flex: 1;                    /* ocupa todo el ancho posible */
-
-    ion-input::part(native) {
-      width: 100%;
-      height: auto;            /* deja que crezca en altura */
-      min-height: 40px;
-      max-height: 100px;       /* opcional: límite de tamaño */
-      background: #f1f1f1;
-      border-radius: 20px;
-      padding: 8px 12px;
-      font-size: 1rem;
-      border: none;            /* quita el borde rectangular */
-      color: #333;
-
-      /* placeholder gris suave */
-      &::placeholder {
-        color: #999;
-      }
-    }
-  }
-
-  .btn-message {
-    flex-shrink: 0;            /* no deja que el botón se encoja */
-    position: relative;
-
-    .circle-btn {
-      --border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      padding: 0;
-      background: #007aff;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* si usas fontawesome dentro del ion-button */
-    .circle-btn i.fa-paper-plane {
-      font-size: 1.2rem;
-    }
-  }
+.btn-message-native ion-icon {
+  font-size: 1.2rem;
 }
