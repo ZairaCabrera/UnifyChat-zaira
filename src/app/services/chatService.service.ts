@@ -85,16 +85,18 @@ export class ChatService {
     await this.mensajesDB.push(newMsg);
   }
 
-  /**
-   * Borra un mensaje por su clave 'id'.
-   */
+  //Borra un mensaje por su clave id
   deleteMessage(id: string): Promise<void> {
     return this.mensajesDB.remove(id);
   }
 
-  /**
-   * Actualiza solo el texto y el timestamp de un mensaje existente.
-   */
+  // Borrar todos los mensajes
+  deleteAllMessages(): Promise<void> {
+    return this.mensajesDB.remove();
+  }
+
+  //Actualiza solo el texto y el timestamp de un mensaje existente
+
   updateMessage(id: string, newText: string): Promise<void> {
     return this.mensajesDB.update(id, {
       text: newText,

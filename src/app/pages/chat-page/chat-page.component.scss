@@ -1,5 +1,4 @@
 
-
 .header-chat {
   position: relative;
   background: #fff;
@@ -24,18 +23,29 @@
   justify-content: flex-start;
 }
 
-.button-chat svg{
+.button-chat {
+  position: relative;
+
+  button {
+    background: none;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+  }
+}
+
+.button-chat > button svg{
   position: absolute;
   background: none;
   border: none;
-  padding: 8px;
+  padding: 10px;
   align-items: center;
   justify-content: center;
   color: #16a0ee;
   cursor: pointer;
   transition: opacity .2s;
   top: 50%;
-  right: 16px;
+  right: 0.1%;
   transform: translateY(-50%);
   width: 50px;
   height: 50px;
@@ -45,6 +55,42 @@ svg:hover {
   opacity: 0.8;
 }
 
+.menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  border-radius: 4px;
+  overflow: hidden;
+  z-index: 1000;
+  min-width: 160px;
+
+  button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 12px;
+    font-size: 0.9rem;
+    color: #333;
+    gap: 8px;
+
+    svg {
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+      position: static !important;
+      padding: 0 !important;
+      color: #16a0ee;
+    }
+
+    &:hover {
+      background: #f0f0f0;
+    }
+  }
+}
+
 
 .header-logo {
   width: 90px;
@@ -52,23 +98,26 @@ svg:hover {
   object-fit: contain;
 }
 
+
+
 /* MENSAJE */
 
-.chat-list ion-toolbar {
+ng-container {
   display: flex;
   position: relative;
   z-index: 101;
   flex-direction: column;
   height: 732px;
   overflow-y: auto;
-  gap: 12px;
-  padding: 0 12 56px;
+  gap: 10px;
+  padding: 0 12 10px;
 }
 
 .chat-item {
   display: flex;
-  align-items: flex-start;
-  margin-bottom: 5px;
+  align-items: flex-end;
+  gap: 2px;
+  margin-bottom: 10px;
 }
 .chat-item.own {
   justify-content: flex-end;
@@ -78,23 +127,61 @@ svg:hover {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  margin-right: 8px;
-  object-fit: cover;
+}
+
+.chat-list,
+.chat-item,
+.message-bubble {
+  overflow: visible !important;
 }
 
 .message-bubble {
+  position: relative;
   background: #EAF5FF;
   border-radius: 16px;
-  padding: 8px 12px;
-  max-width: 70%;
-}
-.message-bubble .timestamp {
-  display: block;
-  font-size: 0.75rem;
-  color: #666;
-  margin-top: 4px;
+  padding: 12px 44px 12px 12px;
+  max-width: 80%;
+  word-wrap: break-word;
+  overflow: visible;
+  margin: 6px 12px;
+
 }
 
+.message-bubble .timestamp {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.75rem;
+    color: #666;
+}
+
+
+.delete-single {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(0,0,0,0.05);
+  border: none;
+  border-radius: 50%;
+  padding: 0;
+  cursor: pointer;
+  transition: background .2s, transform .1s;
+
+  svg {
+    display: block;
+    width: 15px;
+    height: 15px;
+    fill: #888;
+    transition: fill .2s;
+  }
+}
 
 
 /* FOOTER */
@@ -172,3 +259,6 @@ svg:hover {
 .btn-message-native ion-icon {
   font-size: 1.2rem;
 }
+
+
+
