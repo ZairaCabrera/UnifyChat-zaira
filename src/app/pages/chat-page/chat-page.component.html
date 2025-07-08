@@ -49,7 +49,7 @@
 
 <ion-content #content class="chat-content">
   <!-- position="top", invierte el scroll para cargar desde arriba -->
-  <ion-infinite-scroll position="top" threshold="80px" (ionInfinite)="loadMore($event)">
+  <ion-infinite-scroll #inf position="top" threshold="80px" [disabled]="true" (ionInfinite)="getMoreMessage($event)">
     <ion-infinite-scroll-content loadingSpinner="dots" loadingText="Cargando mensajes anteriores...">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>

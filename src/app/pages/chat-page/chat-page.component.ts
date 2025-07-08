@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal, ViewChild} from '@angular/core';
-import { IonicModule, NavController, IonContent, InfiniteScrollCustomEvent } from '@ionic/angular';
+import { IonicModule, NavController, IonContent, InfiniteScrollCustomEvent, IonInfiniteScroll } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { logOutOutline } from 'ionicons/icons';
 import { CommonModule, DatePipe } from '@angular/common';
@@ -23,6 +23,7 @@ export default class ChatPageComponent implements OnInit {
   public messages = signal<Messages[]>([]);//aqui se crean los mensajes con la interfaz que queremos
   currentUser = this.auth.currentUser$ ; //info usuario autenticado: observable<User|null>
   public messageForm!: FormGroup; //creamos el formulario
+
   // bandera para mostrar u ocultar el menu de opciones.
   public showMenu = signal(false);
 
@@ -30,6 +31,8 @@ export default class ChatPageComponent implements OnInit {
   private shouldScroll = false;
   //capturamos el elemento del DOM chatlist
    @ViewChild(IonContent, { static: false }) content!: IonContent;
+   //capuramos evento del DOM del ionInfinitive
+   @ViewChild('inf', { static: false }) infScroll!: IonInfiniteScroll;
 
 
   constructor(private fb: FormBuilder,private chatService: ChatService, private authService: AuthService) {
@@ -38,25 +41,25 @@ export default class ChatPageComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    this.chat.getMessages().subscribe(msgs => {
-      this.messages.set(msgs);
-      // marcamos scroll tras llegada de nuevos mensajes
+  async ngOnInit() {
+    // carga inicial de los últimos 10 mensajes
+    const inicial = await this.chat.getMessages(null, 10);
+      this.messages.set(inicial);
       this.shouldScroll = true;
-    });
-
-
   }
+
 
   ngAfterViewChecked() {
     if (this.shouldScroll) {
       this.shouldScroll = false;
       this.scrollToBottom();
+      this.infScroll.disabled = false;
     }
   }
 
   ngAfterViewInit() {
     // scroll al inicio
+    // this.shouldScroll = true;
     setTimeout(() => this.content.scrollToBottom(300), 50);
   }
 
@@ -64,14 +67,26 @@ export default class ChatPageComponent implements OnInit {
     this.content.scrollToBottom(300);
   }
 
-  async loadMore(event: InfiniteScrollCustomEvent) {
-    try {
-      // se llama al servicio para traer mensajes anteriores
-      await new Promise(res => setTimeout(res, 500));
+   async getMoreMessage(event: InfiniteScrollCustomEvent) {
+    const current = this.messages();
+    if (!current.length) {
+      event.target.disabled = true;
+      return event.target.complete();
+    }
 
+    const oldestTs = current[0].ts as number;
+    try {
+      //  cargo 10 anteriores
+      const older = await this.chat.getMessages(oldestTs, 10);
+      if (older.length) {
+        this.messages.set([...older, ...current]);
+      } else {
+        event.target.disabled = true;
+      }
+    } catch (err) {
+      console.error('Error cargando anteriores', err);
     } finally {
-      // informa a ionic que ya se ha terminado de cargar los mensajes
-      event.detail.complete();
+      event.target.complete();
     }
   }
 
@@ -89,28 +104,16 @@ export default class ChatPageComponent implements OnInit {
     const text = this.messageForm.value.message.trim();
     if (!text) return;
 
-    const currentUser = await firstValueFrom(
-      this.authService.currentUser$.pipe(take(1))
-    );
-    if (!currentUser) { return; }
-
-    const newMsg: Messages = {
-      user:   currentUser.displayName || 'Anónimo',
-      from:   currentUser.uid,
-      text,
-      ts:     Date.now(),
-      avatar: currentUser.photoURL ?? undefined
-    };
-
     try {
-      await this.chatService.addMessage(newMsg);
+      await this.chatService.sendMessage(text);
       this.messageForm.reset();
-
-      // marcamos la bandera para que en AfterViewChecked haga scroll
+      // carga solo el ultimo mensaje
+      const [last] = await this.chat.getMessages(null, 1);
+      // se añade al final de la lista
+      this.messages.update(arr => [...arr, last]);
       this.shouldScroll = true;
-
     } catch (err) {
-      console.error('Error añadiendo mensaje:', err);
+      console.error('Error enviando mensaje:', err);
     }
   }
 
@@ -147,13 +150,6 @@ export default class ChatPageComponent implements OnInit {
 
 }
 
-/**
- *
- * he conseguido poner el scroll abajo cuando inicias sesión (que estaba predeterminado arriba)
- * y también que se posicione abajo cada vez que salga un mensaje.
- * he puesto un desplegable con dos opciones: borrar todos los mensajes y logout
- * he puesto un icono de papelera para eliminar cada uno de los mensajes
- *
- */
+
 
 

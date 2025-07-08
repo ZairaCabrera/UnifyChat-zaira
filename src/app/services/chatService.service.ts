@@ -1,106 +1,101 @@
 // src/app/services/chat.service.ts
-import { Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 //importamos el modulo de @angular/fire/database
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
-import { firstValueFrom, Observable } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { firstValueFrom, from, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { Messages } from '../interfaces/messages.interface';
-import { serverTimestamp } from 'firebase/database';
+import { endAt, endBefore, get, limitToLast, onValue, orderByChild, push, query, ref, serverTimestamp, set } from 'firebase/database';
+import { Database } from '@angular/fire/database';
 
 @Injectable({
   providedIn: 'root'
 })
 
 
-
 export class ChatService {
 
-
-  private mensajesDB: AngularFireList<Messages>;
-
-  constructor(
-    private db: AngularFireDatabase,
-    private authService: AuthService
-  ) {
-    // creamos la lista ordenada por el campo 'ts'
-    this.mensajesDB = this.db.list('/messages', (ref) => ref.orderByChild('date')
-    );
-
-    // this.mensajesDB.push({
-    // user: 'zaira',
-    // text: 'Mensaje de prueba',
-    // from: 'system',
-    // ts: serverTimestamp() as any, // Timestamp del servidor
-    // avatar: 'https://example.com/system-avatar.png' // URL de un avatar por defecto
-  // });
-  }
-
+  private db = inject(Database);
+  private authService = inject(AuthService);
 
 
   //push al nodo messages
-   addMessage(msg: Messages): Promise<void> {
-    return this.mensajesDB.push(msg).then(() => {});
+  async addMessage(msg: Messages): Promise<void> {
+    const messagesRef = ref(this.db, 'messages');
+    const newRef = push(messagesRef); //creamos referencia única
+    await set(newRef, { ...msg, ts: serverTimestamp() }); //guardamos el timestamp del mensaje
   }
 
   //devuelve un Observable de array de mensajes, incluyendo la clave ID de cada uno.
 
-  getMessages(): Observable<(Messages & { id: string })[]> {
-    return this.mensajesDB.snapshotChanges().pipe(
-      map(actions =>
-        actions.map(a => {
-          // data tiene id?: string en su tipo, pero lo vamos a omitir
-          const data = a.payload.val() as Messages & { id?: string };//contenido del mensaje
-          const id = a.payload.key!; //nos da la clave id
+  async getMessages(lastTs: number | null, pageSize: number): Promise<Messages[]> {
+    const baseRef = ref(this.db, 'messages');
 
-          // extraemos id del objeto data y recogemos el resto en rest
-          const { id: _, ...rest } = data;
-          // ahora solo añadimos nuestra id limpia
-          return { ...rest, id };
-        })
-      )
-    );
+    const messagesQuery = lastTs === null
+      ? query(
+          baseRef,
+          orderByChild('ts'),
+          limitToLast(pageSize)
+        )
+      : query(
+          baseRef,
+          orderByChild('ts'),
+          endBefore(lastTs),
+          limitToLast(pageSize)
+        );
+
+    // una unica lectura en lugar de onValue para evitar listeners colgando
+    const snap = await get(messagesQuery);
+    const arr: Messages[] = [];
+
+    snap.forEach(childSnap => {
+      arr.push({
+        ...(childSnap.val() as Messages),
+        id: childSnap.key!
+      });
+    });
+
+    return arr;
   }
 
-  // bbtiene el usuario actual, construye el objeto con serverTimestamp() y hace push.
-  async sendMessage(text: string): Promise<void> {
-    const trimmed = text.trim();
-    if (!trimmed) return;
 
-    // obtenemos currentUser$ o usuario actual
-    const currentUser = await firstValueFrom(this.authService.currentUser$);
+  // bb q tiene el usuario actual, construye el objeto con serverTimestamp() y hace push.
+  async sendMessage(text: string): Promise < void> {
+  const trimmed = text.trim();
+  if(!trimmed) return;
 
-    if (!currentUser) {
-      throw new Error('No hay usuario autenticado.');
-    }
+  const currentUser = await firstValueFrom(this.authService.currentUser$);
+  if(!currentUser) {
+    throw new Error('No hay usuario autenticado.');
+  }
 
     const newMsg: Messages = {
-      user: currentUser.displayName || 'Anónimo',
-      from: currentUser.uid,
-      text: trimmed,
-      ts: serverTimestamp() as any,    // Timestamp del servidor
-      avatar: currentUser.photoURL ?? undefined
-    };
+    user: currentUser.displayName || 'Anónimo',
+    from: currentUser.uid,
+    text: trimmed,
+    ts: serverTimestamp() as any,
+    avatar: currentUser.photoURL ?? undefined
+  };
 
-    await this.mensajesDB.push(newMsg);
-  }
+  const messagesRef = ref(this.db, 'messages');
+  const newRef = push(messagesRef);
+  await set(newRef, newMsg);
+}
+
+
 
   //Borra un mensaje por su clave id
-  deleteMessage(id: string): Promise<void> {
-    return this.mensajesDB.remove(id);
-  }
+  async deleteMessage(id: string): Promise < void> {
+  const msgRef = ref(this.db, `messages/${id}`);
+  await set(msgRef, null);
+}
 
   // Borrar todos los mensajes
-  deleteAllMessages(): Promise<void> {
-    return this.mensajesDB.remove();
-  }
+  async deleteAllMessages(): Promise < void> {
+  const rootRef = ref(this.db, 'messages');
+  await set(rootRef, null);
+}
 
-  //Actualiza solo el texto y el timestamp de un mensaje existente
 
-  updateMessage(id: string, newText: string): Promise<void> {
-    return this.mensajesDB.update(id, {
-      text: newText,
-      ts: serverTimestamp() as any
-    });
-  }
 }

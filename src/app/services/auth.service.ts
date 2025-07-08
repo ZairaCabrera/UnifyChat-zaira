@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import {
   Auth,
   user,
@@ -15,17 +15,13 @@ import {
 })
 export class AuthService {
 
-
+  auth = inject(Auth);
 
   //devuelve un observable <User | null> que emite el usuario actual
   currentUser$ = user(this.auth);
 
 
-  constructor(private auth: Auth) {}
-
-
-
-
+  //constructor(private auth: Auth) {}
 
   // ... (otros métodos como signupWithEmailAndPassword, signinWithEmailAndPassword, signout)
 
