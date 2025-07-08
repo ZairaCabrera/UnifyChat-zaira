@@ -60,11 +60,11 @@ export default class ChatPageComponent implements OnInit {
   ngAfterViewInit() {
     // scroll al inicio
     // this.shouldScroll = true;
-    setTimeout(() => this.content.scrollToBottom(300), 50);
+    setTimeout(() => this.content.scrollToBottom(1000), 1000);
   }
 
   private scrollToBottom() {
-    this.content.scrollToBottom(300);
+    this.content.scrollToBottom(0);
   }
 
    async getMoreMessage(event: InfiniteScrollCustomEvent) {
