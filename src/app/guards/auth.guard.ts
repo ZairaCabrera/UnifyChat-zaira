@@ -4,8 +4,8 @@ import { firstValueFrom, map } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 
 export const isAuthGuard: CanActivateFn = async (route, state): Promise<boolean | UrlTree> => {
-  const auth    = inject(AuthService);
-  const router  = inject(Router);
+  const auth = inject(AuthService);
+  const router = inject(Router);
 
   try {
     // Espera al primer valor de currentUser$
@@ -17,11 +17,12 @@ export const isAuthGuard: CanActivateFn = async (route, state): Promise<boolean 
     //si existe user log, permite ruta
     if (user) {
       return true;
-    } else {
-      // sino redirige a login
-      return router.parseUrl('/login');
     }
+    // sino redirige a login
+    return router.parseUrl('/login');
+
   } catch {
     return router.parseUrl('/login');
   }
 };
+

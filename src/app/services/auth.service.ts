@@ -49,7 +49,6 @@ export class AuthService {
     }
   }
 
-
   //metodo para crear ususario usando email
   async signUpWithEmail(email: string, pass: string): Promise<User> {
     const creds = await createUserWithEmailAndPassword(this.auth, email, pass);
@@ -66,13 +65,4 @@ export class AuthService {
   async signOut(): Promise<void> {
     await signOut(this.auth);
   }
-
-
-
-
-
-
-
-
-
 }

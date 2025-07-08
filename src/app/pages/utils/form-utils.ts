@@ -10,11 +10,11 @@ export class FormUtils {
 
 
   // mensaje de errror
-  static getTextErrors (errors : ValidationErrors) {
+  static getTextErrors(errors: ValidationErrors) {
 
-    for ( const key of Object.keys(errors) ){
+    for (const key of Object.keys(errors)) {
 
-      switch( key ){
+      switch (key) {
 
         case 'required':
           return `Este campo es requerido`;

@@ -1,12 +1,11 @@
-import { Component, inject, OnInit, signal, ViewChild} from '@angular/core';
-import { IonicModule, NavController, IonContent, InfiniteScrollCustomEvent, IonInfiniteScroll } from '@ionic/angular';
-import { AuthService } from 'src/app/services/auth.service';
-import { logOutOutline } from 'ionicons/icons';
 import { CommonModule, DatePipe } from '@angular/common';
-import { Messages } from 'src/app/interfaces/messages.interface';
-import { ChatService } from 'src/app/services/chatService.service';
+import { Component, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { firstValueFrom, take } from 'rxjs';
+import { InfiniteScrollCustomEvent, IonContent, IonicModule, IonInfiniteScroll, NavController } from '@ionic/angular';
+import { logOutOutline } from 'ionicons/icons';
+import { Messages } from 'src/app/interfaces/messages.interface';
+import { AuthService } from 'src/app/services/auth.service';
+import { ChatService } from 'src/app/services/chatService.service';
 
 @Component({
   selector: 'app-chat-page',
@@ -15,37 +14,36 @@ import { firstValueFrom, take } from 'rxjs';
   styleUrls: ['./chat-page.component.scss'],
 })
 export default class ChatPageComponent implements OnInit {
+  private readonly auth = inject(AuthService);
+  private readonly chat = inject(ChatService);
+  private readonly navCtrl = inject(NavController);
 
-  private auth = inject(AuthService);
-  private chat = inject(ChatService);
-  private navCtrl = inject(NavController);
-  public logOutOutline = logOutOutline; //icono de cerrar sesión
-  public messages = signal<Messages[]>([]);//aqui se crean los mensajes con la interfaz que queremos
-  currentUser = this.auth.currentUser$ ; //info usuario autenticado: observable<User|null>
-  public messageForm!: FormGroup; //creamos el formulario
+  logOutOutline = logOutOutline; //icono de cerrar sesión
+  messages = signal<Messages[]>([]);//aqui se crean los mensajes con la interfaz que queremos
+  currentUser = this.auth.currentUser$; //info usuario autenticado: observable<User|null>
+  messageForm: FormGroup = this.fb.group({
+    message: ['', [Validators.required]]
+  });; //creamos el formulario
 
   // bandera para mostrar u ocultar el menu de opciones.
-  public showMenu = signal(false);
+  showMenu = signal(false);
 
   //bandera dispara el scroll
   private shouldScroll = false;
   //capturamos el elemento del DOM chatlist
-   @ViewChild(IonContent, { static: false }) content!: IonContent;
-   //capuramos evento del DOM del ionInfinitive
-   @ViewChild('inf', { static: false }) infScroll!: IonInfiniteScroll;
+  @ViewChild(IonContent, { static: false }) content!: IonContent;
+  //capuramos evento del DOM del ionInfinitive
+  @ViewChild('inf', { static: false }) infScroll!: IonInfiniteScroll;
 
+  constructor(private fb: FormBuilder, private chatService: ChatService) {
 
-  constructor(private fb: FormBuilder,private chatService: ChatService, private authService: AuthService) {
-    this.messageForm = this.fb.group({
-      message: ['', [ Validators.required ]]
-    });
   }
 
   async ngOnInit() {
     // carga inicial de los últimos 10 mensajes
     const inicial = await this.chat.getMessages(null, 10);
-      this.messages.set(inicial);
-      this.shouldScroll = true;
+    this.messages.set(inicial);
+    this.shouldScroll = true;
   }
 
 
@@ -67,7 +65,7 @@ export default class ChatPageComponent implements OnInit {
     this.content.scrollToBottom(0);
   }
 
-   async getMoreMessage(event: InfiniteScrollCustomEvent) {
+  async getMoreMessage(event: InfiniteScrollCustomEvent) {
     const current = this.messages();
     if (!current.length) {
       event.target.disabled = true;
@@ -75,21 +73,18 @@ export default class ChatPageComponent implements OnInit {
     }
 
     const oldestTs = current[0].ts as number;
-    try {
-      //  cargo 10 anteriores
-      const older = await this.chat.getMessages(oldestTs, 10);
+    const older = await this.chat.getMessages(oldestTs, 10);
+
+    setTimeout(() => {
       if (older.length) {
         this.messages.set([...older, ...current]);
       } else {
         event.target.disabled = true;
       }
-    } catch (err) {
-      console.error('Error cargando anteriores', err);
-    } finally {
-      event.target.complete();
-    }
-  }
 
+      event.target.complete();
+    }, 1000);
+  }
 
   //menu de opciones, mostramos las opciones.
   toggleMenu() {
@@ -117,7 +112,6 @@ export default class ChatPageComponent implements OnInit {
     }
   }
 
-
   // borramos todos los mensajes
   async clearMessages() {
     try {
@@ -130,10 +124,13 @@ export default class ChatPageComponent implements OnInit {
 
   // elimina un mensaje concreto, según su id
   deleteMessage(id?: string) {
-    try{
+    try {
       if (!id) return;
       this.chatService.deleteMessage(id);
-    } catch (err){
+
+      this.messages.update(arr => arr.filter(msg => msg.id !== id));
+      this.showMenu.set(false);
+    } catch (err) {
       console.error('Error eliminando mensaje', err);
     }
   }
@@ -147,7 +144,6 @@ export default class ChatPageComponent implements OnInit {
       console.error('Error al cerrar sesión', err);
     }
   }
-
 }
 
 
