@@ -14,13 +14,18 @@ import { ChatService } from 'src/app/services/chatService.service';
   styleUrls: ['./chat-page.component.scss'],
 })
 export default class ChatPageComponent implements OnInit {
+
   private readonly auth = inject(AuthService);
-  private readonly chat = inject(ChatService);
+  private readonly chatService = inject(ChatService);
   private readonly navCtrl = inject(NavController);
+  private fb = inject(FormBuilder);
+  hasMore = true; // bandera comprobar si hay más mensajes
+  readonly pageSize = 10;
 
   logOutOutline = logOutOutline; //icono de cerrar sesión
   messages = signal<Messages[]>([]);//aqui se crean los mensajes con la interfaz que queremos
   currentUser = this.auth.currentUser$; //info usuario autenticado: observable<User|null>
+
   messageForm: FormGroup = this.fb.group({
     message: ['', [Validators.required]]
   });; //creamos el formulario
@@ -35,30 +40,24 @@ export default class ChatPageComponent implements OnInit {
   //capuramos evento del DOM del ionInfinitive
   @ViewChild('inf', { static: false }) infScroll!: IonInfiniteScroll;
 
-  constructor(private fb: FormBuilder, private chatService: ChatService) {
-
-  }
 
   async ngOnInit() {
     // carga inicial de los últimos 10 mensajes
-    const inicial = await this.chat.getMessages(null, 10);
+    const inicial = await this.chatService.getMessages(null, this.pageSize);
     this.messages.set(inicial);
-    this.shouldScroll = true;
+    this.hasMore = inicial.length === this.pageSize;
+    this.shouldScroll = true;//forzamos scroll al fondo
   }
-
 
   ngAfterViewChecked() {
     if (this.shouldScroll) {
       this.shouldScroll = false;
       this.scrollToBottom();
-      this.infScroll.disabled = false;
     }
   }
 
   ngAfterViewInit() {
-    // scroll al inicio
-    // this.shouldScroll = true;
-    setTimeout(() => this.content.scrollToBottom(1000), 1000);
+    setTimeout(() => this.content.scrollToBottom(1000), 1000); //fluidez
   }
 
   private scrollToBottom() {
@@ -67,23 +66,20 @@ export default class ChatPageComponent implements OnInit {
 
   async getMoreMessage(event: InfiniteScrollCustomEvent) {
     const current = this.messages();
-    if (!current.length) {
-      event.target.disabled = true;
+    if (!current.length || !this.hasMore) {
       return event.target.complete();
     }
 
-    const oldestTs = current[0].ts as number;
-    const older = await this.chat.getMessages(oldestTs, 10);
-
+    const oldestTs = current[0].ts as number; //tomamos mensaje más antiguo
+    const older = await this.chatService.getMessages(oldestTs, this.pageSize);
+    this.hasMore = older.length === this.pageSize;
     setTimeout(() => {
-      if (older.length) {
+      if (older.length) { // si hay mensajes los concatena de más antiguos a nuevos
         this.messages.set([...older, ...current]);
-      } else {
-        event.target.disabled = true;
       }
 
       event.target.complete();
-    }, 1000);
+    }, 2000);
   }
 
   //menu de opciones, mostramos las opciones.
@@ -94,16 +90,16 @@ export default class ChatPageComponent implements OnInit {
 
   // llamamos a chat.sendMessage() y luego reseteamos el formulario
   async onSubmit() {
-    if (this.messageForm.invalid) return;
+    if (this.messageForm.invalid) return; //error
 
-    const text = this.messageForm.value.message.trim();
+    const text = this.messageForm.value.message.trim(); //vacio
     if (!text) return;
 
     try {
       await this.chatService.sendMessage(text);
       this.messageForm.reset();
       // carga solo el ultimo mensaje
-      const [last] = await this.chat.getMessages(null, 1);
+      const [last] = await this.chatService.getMessages(null, 1);
       // se añade al final de la lista
       this.messages.update(arr => [...arr, last]);
       this.shouldScroll = true;
@@ -116,6 +112,8 @@ export default class ChatPageComponent implements OnInit {
   async clearMessages() {
     try {
       await this.chatService.deleteAllMessages();
+      this.messages.set([]);
+      this.hasMore = false; //no esté cargando mensajes
       this.showMenu.set(false);
     } catch (err) {
       console.error('Error eliminando todos los mensajes', err);
@@ -129,7 +127,7 @@ export default class ChatPageComponent implements OnInit {
       this.chatService.deleteMessage(id);
 
       this.messages.update(arr => arr.filter(msg => msg.id !== id));
-      this.showMenu.set(false);
+      //this.showMenu.set(false);
     } catch (err) {
       console.error('Error eliminando mensaje', err);
     }

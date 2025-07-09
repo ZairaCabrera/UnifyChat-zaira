@@ -9,31 +9,26 @@ export class FormUtils {
   static passwordPattern = '^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{6,16}$';
 
 
-  // mensaje de errror
-  static getTextErrors(errors: ValidationErrors) {
+  // mensaje de error, como un objeto de mapeo
+  static textErrors: Record<string,string> = {
+    required:  'Este campo es requerido',
+    email:     'El valor ingresado no es un correo electrónico',
+    minLength: 'La contraseña debe de tener al menos 6 letras',
+    default:   'Error de validación no controlado',
+  };
 
+  //Devuelve el mensaje correspondiente al primer error encontrado
+  //usando el mapeo textError y si no lo encuentra recurre a textErrors.default
+  //si la clave no está en el objeto
+  static getTextErrors(errors: ValidationErrors): string | null {
     for (const key of Object.keys(errors)) {
-
-      switch (key) {
-
-        case 'required':
-          return `Este campo es requerido`;
-
-        case 'email':
-          return `El valor ingresado no es un correo electrónico`;
-
-        case 'minLength':
-          return `La contraseña debe de tener al menos 6 letras`;
-
-        default:
-          return `Error de validación no controlado ${key}`;
-
-      }
-
+      // si no existe usamos el default
+      const msg = FormUtils.textErrors[key] ?? FormUtils.textErrors['default'];
+      return msg;
     }
     return null;
-
   }
+
 
   static isValidField(form: FormGroup, fieldName: string): boolean | null {
     return (

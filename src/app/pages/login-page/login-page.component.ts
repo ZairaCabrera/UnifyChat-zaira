@@ -30,10 +30,6 @@ export default class LoginPageComponent implements OnInit {
  }
 
  async login() {
-    // if (this.myForm.invalid) {
-    //   this.myForm.markAllAsTouched();
-    //   return;
-    // }
 
     const { email, password } = this.myForm.value;
     try {

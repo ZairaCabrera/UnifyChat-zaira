@@ -14,27 +14,20 @@ import {
   providedIn: 'root'
 })
 export class AuthService {
-
+  //injectamos servicio de Firebase authentication
   auth = inject(Auth);
 
-  //devuelve un observable <User | null> que emite el usuario actual
+  //devuelve un observable <User | null> que emite el usuario actual. Null cuando no haya nadie autenticado
   currentUser$ = user(this.auth);
 
+  //Lanza popup para que el usuario elija cuenta de google
 
-  //constructor(private auth: Auth) {}
-
-  // ... (otros métodos como signupWithEmailAndPassword, signinWithEmailAndPassword, signout)
-
-  /**
-   * Iniciar sesión usando Google con un popup. como async porque iniciamos primero sesión y esperamos un promesa
-   * @returns Una promesa que se resuelve con los datos del usuario.
-   */
    async signInWithGooglePopup(): Promise<User> {
     try {
 
       const provider = new GoogleAuthProvider();
 
-      //iniciamos primero sesión con singInWithPopup
+      //guardamos credenciales
       let userCredential = null;
       await signInWithPopup(this.auth, provider). then( (credencial) => userCredential = credencial);
 
@@ -49,13 +42,13 @@ export class AuthService {
     }
   }
 
-  //metodo para crear ususario usando email
+  //metodo para crear ususario usando email con método de Firebase
   async signUpWithEmail(email: string, pass: string): Promise<User> {
     const creds = await createUserWithEmailAndPassword(this.auth, email, pass);
     return creds.user;
   }
 
-  //método para registrarse con email
+  //método registrarse con email y contraseña
   async signInWithEmail(email: string, pass: string): Promise<User> {
     const creds = await signInWithEmailAndPassword(this.auth, email, pass);
     return creds.user;

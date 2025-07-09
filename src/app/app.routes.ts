@@ -27,3 +27,8 @@ export const routes: Routes = [
   },
 
 ];
+
+
+
+
+//lazyloading
